@@ -1,2 +1,9 @@
 *.class
 *.log
+
+# scala metals
+metals.sbt
+project/project/
+target/
+.bloop/
+.metals/

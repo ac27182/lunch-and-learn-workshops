@@ -1,12 +1,48 @@
 package com.github.ac27182
 
 import cats.effect.{ExitCode, IO, IOApp}
-// import com.github.ac27182.Typeclasses1.Employee
 import cats.implicits._
 import cats._
 import java.util.concurrent.Future
-import com.github.ac27182.Typeclasses1.Record
+// import com.github.ac27182.Typeclasses1.Record
 import com.github.ac27182.Typeclasses1.Employee
+import eu.timepit.refined._
+import eu.timepit.refined.api.Refined
+import eu.timepit.refined.numeric.Interval
+import eu.timepit.refined.collection.Size
+import eu.timepit.refined.string.MatchesRegex
+import eu.timepit.refined.numeric.Positive
+import eu.timepit.refined.auto._
+import eu.timepit.refined.string.Regex
+import eu.timepit.refined.boolean.Not
+
+object RefinedTypes {
+  // https://github.com/fthomas/refined
+
+  // this is the essence of domain driven design
+  // using a strong, expressive type system, to reduce human error and make our code do exactly what we want
+
+  type Age =
+    Int Refined Interval.Open[18, 99]
+
+  type PosInt =
+    Int Refined Positive
+
+  type EventType =
+    String Refined MatchesRegex["DriverEvents220|VehicleEvents114"]
+
+  type PostCode =
+    String Refined MatchesRegex["^\\w[a-zA-Z0-9]{5}$"]
+
+  type Name =
+    String Refined MatchesRegex["^\\w{1,10}$"]
+
+  val age: PosInt = 5
+  val data: EventType = "DriverEvents220"
+  val name: Name = "alex"
+  val postcode: PostCode = "BL52SW"
+
+}
 
 object Typeclasses2 {
   case class Employee(name: String, id: Int, manager: Boolean)
@@ -42,12 +78,17 @@ object Typeclasses2 {
 
 }
 
+import java.util.{UUID, Date}
+import java.time.Instant
 object Typeclasses1 {
 
   case class Employee(name: String, id: Int, manager: Boolean)
   case class IceCream(name: String, numCherries: Int, cone: Boolean)
-  case class Calendar(owner: Employee, events: List[Record])
-  case class Record(day: String, month: String, notes: String)
+  case class ThermostatRecord(
+      timestamp: Instant,
+      temprature: Long,
+      userId: UUID
+  )
 
   // type classes consist of three components
   // - the type class, which takes at least one generic parameter
@@ -93,7 +134,7 @@ object Main extends IOApp {
 
   import Typeclasses1.CsvEncoderInstances._
   import Typeclasses1.CsvEncoderSyntax.{CsvEncoderOps}
-  // import Typeclasses2._
+
   val employees = List(
     Employee("alex", 7, false),
     Employee("huw", 69, false),
@@ -102,9 +143,6 @@ object Main extends IOApp {
 
   val message: String =
     employees.writeCsv
-
-  // val message1: String =
-  //   writeCsv(employees)
 
   def run(args: List[String]): IO[ExitCode] =
     program(message)

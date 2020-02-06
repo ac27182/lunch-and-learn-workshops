@@ -18,9 +18,11 @@ import eu.timepit.refined.boolean.Not
 
 object RefinedTypes {
   // https://github.com/fthomas/refined
+  // https://medium.com/@Methrat0n/wtf-is-refined-5008eb233194
 
   // this is the essence of domain driven design
-  // using a strong, expressive type system, to reduce human error and make our code do exactly what we want
+  // using a strong, expressive type system, to reduce human error
+  // encode constraints on our types so we know exactly what we want
 
   type Age =
     Int Refined Interval.Open[18, 99]

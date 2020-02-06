@@ -15,6 +15,7 @@ import eu.timepit.refined.numeric.Positive
 import eu.timepit.refined.auto._
 import eu.timepit.refined.string.Regex
 import eu.timepit.refined.boolean.Not
+import com.github.ac27182.Typeclasses1.IceCream
 
 object RefinedTypes {
   // https://github.com/fthomas/refined
@@ -95,7 +96,9 @@ import java.time.Instant
 object Typeclasses1 {
 
   case class Employee(name: String, id: Int, manager: Boolean)
+
   case class IceCream(name: String, numCherries: Int, cone: Boolean)
+
   case class ThermostatRecord(
       timestamp: Instant,
       temprature: Long,
@@ -119,6 +122,27 @@ object Typeclasses1 {
         def encode(e: Employee): List[String] =
           List(e.name, e.manager.toString, if (e.manager) "y" else "n")
       }
+
+    implicit val iceCreamEncoder: CsvEncoder[IceCream] =
+      new CsvEncoder[IceCream] {
+        def encode(iceCream: IceCream): List[String] =
+          List(
+            iceCream.name,
+            iceCream.numCherries.toString,
+            if (iceCream.cone) "y" else "n"
+          )
+      }
+
+    implicit val theormostatRecordEncoder: CsvEncoder[ThermostatRecord] =
+      new CsvEncoder[ThermostatRecord] {
+        def encode(value: ThermostatRecord): List[String] = ???
+      }
+    // case class ThermostatRecord(
+    //     timestamp: Instant,
+    //     temprature: Long,
+    //     userId: UUID
+    // )
+
   }
 
   // the interface methods / implicit interface methods used to expose our api to the end user
@@ -153,8 +177,14 @@ object Main extends IOApp {
     Employee("michal", 7, false)
   )
 
+  val iceCreams = List(
+    IceCream("choclate", 10, false),
+    IceCream("choclate", 10, false),
+    IceCream("choclate", 10, false)
+  )
+
   val message: String =
-    employees.writeCsv
+    iceCreams.writeCsv
 
   def run(args: List[String]): IO[ExitCode] =
     program(message)

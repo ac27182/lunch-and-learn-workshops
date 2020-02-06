@@ -27,6 +27,16 @@ object RefinedTypes {
   type Age =
     Int Refined Interval.Open[18, 99]
 
+  type bit2  = Int Refined Interval.Open[0, 4]
+  type bit3  = Int Refined Interval.Open[0, 8]
+  type bit4  = Int Refined Interval.Open[0, 16]
+  type bit5  = Int Refined Interval.Open[0, 32]
+  type bit6  = Int Refined Interval.Open[0, 64]
+  type bit7  = Int Refined Interval.Open[0, 128]
+  type bit8  = Int Refined Interval.Open[0, 256]
+  type bit9  = Int Refined Interval.Open[0, 512]
+  type bit10 = Int Refined Interval.Open[0, 1024]
+
   type PosInt =
     Int Refined Positive
 
@@ -39,9 +49,9 @@ object RefinedTypes {
   type Name =
     String Refined MatchesRegex["^\\w{1,10}$"]
 
-  val age: PosInt = 5
-  val data: EventType = "DriverEvents220"
-  val name: Name = "alex"
+  val age: PosInt        = 5
+  val data: EventType    = "DriverEvents220"
+  val name: Name         = "alex"
   val postcode: PostCode = "BL52SW"
 
 }

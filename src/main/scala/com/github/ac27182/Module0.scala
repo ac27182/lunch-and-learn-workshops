@@ -16,6 +16,8 @@ import eu.timepit.refined.auto._
 import eu.timepit.refined.string.Regex
 import eu.timepit.refined.boolean.Not
 import com.github.ac27182.Typeclasses1.IceCream
+import java.util.{UUID, Date}
+import java.time.Instant
 
 object RefinedTypes {
   // https://github.com/fthomas/refined
@@ -91,8 +93,6 @@ object Typeclasses2 {
 
 }
 
-import java.util.{UUID, Date}
-import java.time.Instant
 object Typeclasses1 {
 
   case class Employee(name: String, id: Int, manager: Boolean)
